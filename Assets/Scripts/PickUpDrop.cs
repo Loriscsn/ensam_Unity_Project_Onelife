@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class PickUpDrop : MonoBehaviour
 {
-    public Transform handPosition;    // Position de la main
-    public GameObject initialObject;  // Objet que le personnage tiendra au début du jeu
-    public float pickUpRange = 1.0f;  // Distance pour ramasser
+    public Transform handPosition;           // Position de la main
+    public GameObject initialObject;         // Objet que le personnage tiendra au début du jeu
+    public float pickUpRange = 1.0f;         // Distance pour ramasser
     public Vector3 plantedRotation = new Vector3(0, 0, 0); // Rotation verticale
-    public float plantHeightOffset = 0.1f;  // Hauteur du sceptre planté
+    public float plantHeightOffset = 0.1f;   // Hauteur du sceptre planté
+    public TorchLightController torchLightController; // Référence au contrôleur de lumière
     private GameObject carriedObject = null; // Objet ramassé
 
     void Start()
     {
         if (initialObject != null)
         {
-            // Si un objet initial est défini, le ramasser au début du jeu
             PickUpObject(initialObject);
         }
     }
@@ -67,6 +67,12 @@ public class PickUpDrop : MonoBehaviour
         obj.transform.parent = handPosition;
 
         carriedObject = obj;
+
+        // Notifier que la torche est portée
+        if (torchLightController != null)
+        {
+            torchLightController.SetTorchHeld(true);
+        }
     }
 
     void PlantObject()
@@ -83,17 +89,16 @@ public class PickUpDrop : MonoBehaviour
         Rigidbody rb = carriedObject.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.isKinematic = true;   // Rendre l'objet immobile
-            rb.detectCollisions = true;  // Garder les collisions actives pour pouvoir le reprendre
+            rb.isKinematic = true; // Rendre l'objet immobile
+            rb.detectCollisions = true; // Garder les collisions actives pour pouvoir le reprendre
         }
 
-        // Laisser le collider actif pour bloquer le personnage
-        Collider collider = carriedObject.GetComponent<Collider>();
-        if (collider != null)
+        // Notifier que la torche est posée
+        if (torchLightController != null)
         {
-            collider.enabled = true;  // Le collider reste actif pour bloquer le joueur
+            torchLightController.SetTorchHeld(false);
         }
 
-        carriedObject = null;  // Réinitialiser la référence
+        carriedObject = null; // Réinitialiser la référence
     }
 }
