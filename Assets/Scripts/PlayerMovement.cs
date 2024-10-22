@@ -13,12 +13,15 @@ public class PlayerMovement : MonoBehaviour
 
     private PickUpDrop pickUpDrop; // Référence au script PickUpDrop pour savoir si le personnage tient la torche
 
+    private Animator animator;
     void Start()
     {
         // Récupérer le Rigidbody du personnage
         rb = GetComponent<Rigidbody>();
         // Trouver et stocker la référence au script PickUpDrop
         pickUpDrop = GetComponent<PickUpDrop>();
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -36,6 +39,12 @@ public class PlayerMovement : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
             // Utilise la vitesse de rotation définie pour tourner plus vite
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
         }
     }
 
