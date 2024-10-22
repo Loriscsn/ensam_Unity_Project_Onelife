@@ -360,7 +360,6 @@ MonoBehaviour:
   pickUpRange: 1
   plantedRotation: {x: 0, y: 0, z: 0}
   plantHeightOffset: 0.1
-  torchLightController: {fileID: 0}
 --- !u!114 &970358758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,10 +391,9 @@ GameObject:
   - component: {fileID: 1030832522}
   - component: {fileID: 1030832521}
   - component: {fileID: 1030832520}
-  - component: {fileID: 1030832524}
   - component: {fileID: 1030832525}
-  - component: {fileID: 1030832526}
   - component: {fileID: 1030832527}
+  - component: {fileID: 1030832528}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -489,22 +487,8 @@ Transform:
   m_Children:
   - {fileID: 970358755}
   - {fileID: 1046272229}
-  - {fileID: 1817601586}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1030832524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030832519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001022b9fa6981e4a9002bcd8a997405, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!114 &1030832525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,20 +506,6 @@ MonoBehaviour:
   pickUpRange: 1
   plantedRotation: {x: 0, y: 0, z: 0}
   plantHeightOffset: 0.1
-  torchLightController: {fileID: 0}
---- !u!114 &1030832526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1030832519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 001022b9fa6981e4a9002bcd8a997405, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!54 &1030832527
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -563,6 +533,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1030832528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030832519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71851e4742c680b4a844607c803dd356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalMoveSpeed: 7
+  holdingTorchSpeed: 5
+  rotationSpeed: 720
 --- !u!1 &1038145305
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +790,7 @@ GameObject:
   - component: {fileID: 1817601586}
   - component: {fileID: 1817601585}
   - component: {fileID: 1817601584}
+  - component: {fileID: 1817601587}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -879,17 +865,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817601583}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20833842, y: 0, z: 0, w: 0.97805685}
+  m_LocalRotation: {x: 0.20833842, y: -0, z: -0, w: 0.97805685}
   m_LocalPosition: {x: 0, y: 3.45, z: -5.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1030832523}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 24.05, y: 0, z: 0}
+--- !u!114 &1817601587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817601583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed018d2646d61134d8ef2a50f35265d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1030832523}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1817601586}
   - {fileID: 1578995146}
   - {fileID: 1030832523}
   - {fileID: 1038145309}
