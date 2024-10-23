@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float normalMoveSpeed = 7f; // Vitesse normale de déplacement
-    public float holdingTorchSpeed = 5f; // Vitesse réduite quand on tient la torche
+    public float normalMoveSpeed = 4f; // Vitesse normale de déplacement
+    public float holdingTorchSpeed = 2f; // Vitesse réduite quand on tient la torche
     public float rotationSpeed = 720f; // Vitesse de rotation du personnage (ajustable)
 
     private Vector3 movementDirection; // Direction de mouvement du joueur
@@ -13,7 +13,8 @@ public class PlayerMovement : MonoBehaviour
 
     private PickUpDrop pickUpDrop; // Référence au script PickUpDrop pour savoir si le personnage tient la torche
 
-    private Animator animator;
+    private Animator animator; // Animation du personnage
+
     void Start()
     {
         // Récupérer le Rigidbody du personnage
