@@ -6,7 +6,7 @@ public class PickUpDrop : MonoBehaviour
 {
     public Transform handPosition;    // Position de la main
     public GameObject initialObject;  // Objet que le personnage tiendra au début du jeu
-    public float pickUpRange = 2.0f;  // Distance pour ramasser
+    public float pickUpRange = 1.0f;  // Distance pour ramasser
     public Vector3 plantedRotation = new Vector3(0, 0, 0); // Rotation verticale
     public float plantHeightOffset = 0.0f;  // Hauteur du sceptre planté
     private GameObject carriedObject = null; // Objet ramassé
