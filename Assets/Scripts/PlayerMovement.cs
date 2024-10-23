@@ -47,6 +47,15 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("isWalking", false);
         }
+
+        if (pickUpDrop.IsHoldingTorch())
+        {
+            animator.SetBool("isRunning", false);
+        }
+        else
+        {
+            animator.SetBool("isRunning", true);
+        }
     }
 
     void FixedUpdate()
