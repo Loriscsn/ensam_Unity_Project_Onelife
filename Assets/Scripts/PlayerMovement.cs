@@ -41,20 +41,26 @@ public class PlayerMovement : MonoBehaviour
             // Utilise la vitesse de rotation définie pour tourner plus vite
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 
-            animator.SetBool("isWalking", true);
-        }
-        else
-        {
-            animator.SetBool("isWalking", false);
         }
 
-        if (pickUpDrop.IsHoldingTorch())
+        
+        if (movementDirection != Vector3.zero) 
         {
-            animator.SetBool("isRunning", false);
+            if (pickUpDrop.IsHoldingTorch()) 
+            {
+                animator.SetBool("isWalking", true);
+                animator.SetBool("isRunning", false);
+            }
+            else 
+            {
+                animator.SetBool("isRunning", true);
+                animator.SetBool("isWalking", false);
+            }
         }
-        else
+        else 
         {
-            animator.SetBool("isRunning", true);
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isRunning", false);
         }
     }
 
