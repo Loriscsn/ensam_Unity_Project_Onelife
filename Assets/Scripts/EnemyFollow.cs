@@ -14,9 +14,13 @@ public class EnemyFollow : MonoBehaviour
 
     private bool canSeeTorch = false;  // Savoir si l'ennemi peut voir la torche
     private Rigidbody rb; // Référence au Rigidbody de l'ennemi
-
+    float initialYpos;
+    public float amplitude = 0.01f;
+    public float frequency = 5f;
+    float time = 0f;
     void Start()
     {
+        initialYpos = transform.position.y;
         // Assurez-vous que la torche a été assignée
         if (torch == null)
         {
@@ -29,6 +33,7 @@ public class EnemyFollow : MonoBehaviour
 
     void Update()
     {
+        time += Time.deltaTime;
         // Calcul de la distance entre l'ennemi et la torche
         float distanceToTorch = Vector3.Distance(transform.position, torch.position);
 
@@ -73,9 +78,9 @@ public class EnemyFollow : MonoBehaviour
         // Vérifier si l'ennemi doit éviter d'autres ennemis
         Vector3 avoidanceDirection = GetAvoidanceDirection();
         Vector3 moveDirection = (directionToTorch + avoidanceDirection).normalized;
-
+        Vector3 floatOffset = Vector3.up * (Mathf.Sin(time * frequency) * amplitude + initialYpos);
         // Déplacer l'ennemi vers la torche tout en évitant d'autres ennemis
-        rb.MovePosition(transform.position + moveDirection * speed * Time.deltaTime);
+        rb.MovePosition(transform.position + moveDirection * speed * Time.deltaTime + floatOffset);
     }
 
     Vector3 GetAvoidanceDirection()

@@ -120,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6150540407a3c2d43b3ae48909c14dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  torch: {fileID: 0}
   speed: 3
   detectionRange: 10
   fieldOfView: 359
@@ -129,6 +129,8 @@ MonoBehaviour:
     m_Bits: 0
   minDistanceBetweenEnemies: 1
   avoidanceRadius: 1
+  amplitude: 0.05
+  frequency: 5
 --- !u!54 &5711262744907788308
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -26,6 +26,6 @@ public class GhostFloat : MonoBehaviour
         newPosition.y = initialY + yOffset; // Garder la position Y oscillante
 
         // Appliquer la nouvelle position tout en gardant la position X et Z
-        transform.position = new Vector3(newPosition.x, newPosition.y, newPosition.z);
+        transform.position += new Vector3(newPosition.x, newPosition.y, newPosition.z);
     }
 }
