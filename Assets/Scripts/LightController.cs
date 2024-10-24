@@ -8,9 +8,8 @@ public class PointLightController : MonoBehaviour
     public float minRange = 2.5f;  // La portée minimum de la lumière
     public float maxRange = 15f; // La portée maximum de la lumière
     public float transitionSpeed = 15f; // La vitesse de transition du changement de portée
-    private bool isExpanding = true; // Indicateur si on agrandit ou rétrécit
     private bool isTransitioning = false; // Vérifie si la transition est en cours
-    public bool IsHoldingTorch = false; // Indicateur si la torche est dans la main du joueur
+    public bool isTorchInHand = true; // La torche commence dans la main du joueur
     public float pickUpRange = 2f; // Distance pour ramasser la torche
     public Transform player; // Référence au joueur pour vérifier la distance
 
@@ -34,43 +33,37 @@ public class PointLightController : MonoBehaviour
         // Vérifier si l'utilisateur appuie sur la touche espace
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // Si la torche n'est pas dans la main, on vérifie la distance pour la ramasser
-            if (!IsHoldingTorch)
+            if (isTorchInHand)
             {
-                float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-                // Si le joueur est suffisamment proche, il peut ramasser la torche
-                if (distanceToPlayer <= pickUpRange)
-                {
-                    IsHoldingTorch = true;
-                    Debug.Log("Vous avez ramassé la torche.");
-                }
+                // Le joueur lâche la torche et la lumière s'agrandit
+                isTorchInHand = false;
+                isTransitioning = true; // Commence la transition pour agrandir la lumière
             }
             else
             {
-                // Si la torche est dans la main, contrôler la lumière
-                if (isTransitioning && isExpanding)
+                // Le joueur essaie de ramasser la torche
+                float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+                if (distanceToPlayer <= pickUpRange)
                 {
-                    isExpanding = false;
+                    // Le joueur récupère la torche et la lumière diminue
+                    isTorchInHand = true;
+                    isTransitioning = true; // Commence la transition pour diminuer la lumière
+                    Debug.Log("Vous avez ramassé la torche.");
                 }
-                else if (isTransitioning && !isExpanding)
+                else
                 {
-                    isExpanding = true;
-                }
-                else if (!isTransitioning)
-                {
-                    isExpanding = !isExpanding; // Inverser l'état d'expansion/réduction
-                    isTransitioning = true; // Démarrer la transition
+                    Debug.Log("Vous êtes trop loin pour ramasser la torche.");
                 }
             }
         }
 
-        // Effectuer la transition si elle est en cours et si la torche est dans la main
-        if (IsHoldingTorch && isTransitioning)
+        // Effectuer la transition pour changer la portée de la lumière
+        if (isTransitioning)
         {
-            if (isExpanding)
+            if (isTorchInHand)
             {
-                // Rétrécir vers minRange
+                // Si la torche est dans la main, rétrécir la lumière vers minRange
                 lightSource.range = Mathf.MoveTowards(lightSource.range, minRange, transitionSpeed * Time.deltaTime);
                 if (lightSource.range == minRange)
                 {
@@ -79,7 +72,7 @@ public class PointLightController : MonoBehaviour
             }
             else
             {
-                // Agrandir vers maxRange
+                // Si la torche est au sol, agrandir la lumière vers maxRange
                 lightSource.range = Mathf.MoveTowards(lightSource.range, maxRange, transitionSpeed * Time.deltaTime);
                 if (lightSource.range == maxRange)
                 {
