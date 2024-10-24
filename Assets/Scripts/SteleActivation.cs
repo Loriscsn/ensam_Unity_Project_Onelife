@@ -11,24 +11,40 @@ public class SteleActivation : MonoBehaviour
     public float targetIntensity = 1.5f;    // Intensité maximale de la lumière
     public float flickerAmount = 0.05f;     // Amplitude du scintillement (variation autour de l'intensité cible)
     public float flickerDuration = 2f;      // Temps pour passer d'une intensité à une autre
-    public bool isActivated = false;        // Variable pour vérifier si la stèle est déjà activée
+    public bool isActivated = false;        // Variable pour vérifier si cette stèle est déjà activée
 
-    private void OnTriggerStay(Collider other)
+    // Référence au manager
+    public StelesManager stelesManager; // Référence au StelesManager
+    private bool playerInRange = false; // Savoir si le joueur est dans la zone de la stèle
+    private PickUpDrop pickUpDrop;      // Référence au script PickUpDrop du joueur
+
+    private void Update()
     {
-        // Vérifier si le joueur est dans la zone de la stèle
+        // Si le joueur presse la touche F, est dans la zone et porte la torche
+        if (Input.GetKeyDown(KeyCode.F) && playerInRange && !isActivated && pickUpDrop != null && pickUpDrop.IsHoldingTorch())
+        {
+            ActivateStele(); // Activer la stèle
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Vérifier si le joueur est entré dans la zone de la stèle
         if (other.CompareTag("Player"))
         {
-            // Obtenir le script PickUpDrop du joueur pour vérifier s'il tient la torche
-            PickUpDrop pickUpDrop = other.GetComponent<PickUpDrop>();
+            playerInRange = true;
+            // Récupérer le script PickUpDrop du joueur pour vérifier s'il porte la torche
+            pickUpDrop = other.GetComponent<PickUpDrop>();
+        }
+    }
 
-            if (pickUpDrop != null && pickUpDrop.IsHoldingTorch() && !isActivated)
-            {
-                // Si le joueur presse la touche F et que la stèle n'est pas activée
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    ActivateStele();
-                }
-            }
+    private void OnTriggerExit(Collider other)
+    {
+        // Vérifier si le joueur est sorti de la zone de la stèle
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+            pickUpDrop = null; // Réinitialiser la référence à PickUpDrop lorsque le joueur sort
         }
     }
 
@@ -46,8 +62,14 @@ public class SteleActivation : MonoBehaviour
         // Démarrer l'augmentation progressive de la lumière
         if (activationLight != null)
         {
-            activationLight.gameObject.SetActive(true); // Activer le GameObject de la lumière
+            activationLight.gameObject.SetActive(true); // Activer la lumière
             StartCoroutine(IncreaseLightIntensity());  // Démarrer la coroutine pour augmenter l'intensité de la lumière
+        }
+
+        // Notifier le manager que cette stèle est activée
+        if (stelesManager != null)
+        {
+            stelesManager.NotifySteleActivated();
         }
 
         // Debug pour confirmation
