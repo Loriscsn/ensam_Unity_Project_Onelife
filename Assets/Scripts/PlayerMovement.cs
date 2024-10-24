@@ -10,55 +10,55 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 movementDirection; // Direction de mouvement du joueur
     private Rigidbody rb; // Composant Rigidbody du personnage
-
     private PickUpDrop pickUpDrop; // Référence au script PickUpDrop pour savoir si le personnage tient la torche
-
     private Animator animator; // Animation du personnage
 
     void Start()
     {
         // Récupérer le Rigidbody du personnage
         rb = GetComponent<Rigidbody>();
+
         // Trouver et stocker la référence au script PickUpDrop
         pickUpDrop = GetComponent<PickUpDrop>();
 
+        // Récupérer l'Animator
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // Obtenir les inputs de déplacement sur les axes horizontaux et verticaux
-        float moveHorizontal = Input.GetAxisRaw("Horizontal"); // A/D ou Left/Right
-        float moveVertical = Input.GetAxisRaw("Vertical"); // W/S ou Up/Down
+        // Gestion des mouvements avec les touches ZQSD ou les flèches directionnelles
+        float moveHorizontal = Input.GetAxisRaw("Horizontal"); // A/D ou Left/Right ou Q/D
+        float moveVertical = Input.GetAxisRaw("Vertical"); // W/S ou Up/Down ou Z/S
 
-        // Calculer la direction de mouvement
-        movementDirection = new Vector3(moveHorizontal, 0.0f, moveVertical).normalized;
+        // Calculer la direction de mouvement en utilisant les axes X et Z
+        movementDirection = new Vector3(moveHorizontal, 0f, moveVertical).normalized;
 
-        // Si le joueur se déplace, faire tourner le personnage dans la direction du mouvement
+        // Si le joueur se déplace, on fait tourner le personnage dans la direction du mouvement
         if (movementDirection != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-            // Utilise la vitesse de rotation définie pour tourner plus vite
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-
         }
 
-        
-        if (movementDirection != Vector3.zero) 
+        // Gestion des animations en fonction du déplacement
+        if (movementDirection != Vector3.zero)
         {
-            if (pickUpDrop.IsHoldingTorch()) 
+            // Si le joueur se déplace, on ajuste les animations (marche ou course)
+            if (pickUpDrop.IsHoldingTorch())
             {
                 animator.SetBool("isWalking", true);
                 animator.SetBool("isRunning", false);
             }
-            else 
+            else
             {
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isWalking", false);
             }
         }
-        else 
+        else
         {
+            // Si le joueur ne se déplace pas, on désactive les animations de mouvement
             animator.SetBool("isWalking", false);
             animator.SetBool("isRunning", false);
         }
