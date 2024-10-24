@@ -13,11 +13,6 @@ public class SteleActivation : MonoBehaviour
     public float flickerDuration = 2f;      // Temps pour passer d'une intensité à une autre
     public bool isActivated = false;        // Variable pour vérifier si la stèle est déjà activée
 
-    // Paramètres pour le Halo
-    public Behaviour haloComponent;         // Le composant Halo
-    public float haloMaxSize = 1.5f;        // Taille maximale du halo
-    public float haloFadeDuration = 2f;     // Durée de l'apparition progressive du halo
-
     private void OnTriggerStay(Collider other)
     {
         // Vérifier si le joueur est dans la zone de la stèle
@@ -55,14 +50,8 @@ public class SteleActivation : MonoBehaviour
             StartCoroutine(IncreaseLightIntensity());  // Démarrer la coroutine pour augmenter l'intensité de la lumière
         }
 
-        // Activer le Halo progressivement
-        if (haloComponent != null)
-        {
-            StartCoroutine(FadeInHalo());
-        }
-
         // Debug pour confirmation
-        Debug.Log("Stèle activée avec lumière et halo !");
+        Debug.Log("Stèle activée avec lumière !");
     }
 
     // Coroutine pour augmenter progressivement l'intensité de la lumière
@@ -111,30 +100,5 @@ public class SteleActivation : MonoBehaviour
             // Attendre une courte pause (optionnel) avant de recommencer
             yield return new WaitForSeconds(0.1f);
         }
-    }
-
-    // Coroutine pour faire apparaître le halo progressivement
-    private IEnumerator FadeInHalo()
-    {
-        float currentTime = 0f;
-        float initialSize = 0f;  // Taille initiale du Halo
-
-        // Accéder à la propriété Halo via le système Reflection (car Unity n'expose pas cette propriété directement)
-        var halo = (Component)haloComponent;
-
-        while (currentTime < haloFadeDuration)
-        {
-            currentTime += Time.deltaTime;
-            // Calculer la taille du halo progressivement
-            float newSize = Mathf.Lerp(initialSize, haloMaxSize, currentTime / haloFadeDuration);
-
-            // Accéder à la taille du Halo et l'ajuster
-            halo.GetType().GetProperty("size").SetValue(halo, newSize, null);
-
-            yield return null; // Attendre la frame suivante
-        }
-
-        // Assurer que la taille du halo atteint bien la taille maximale
-        halo.GetType().GetProperty("size").SetValue(halo, haloMaxSize, null);
     }
 }
