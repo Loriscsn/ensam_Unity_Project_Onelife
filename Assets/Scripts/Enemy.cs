@@ -6,31 +6,95 @@ public class Enemy : MonoBehaviour
     public float firstPhaseDuration = 0.5f;  // Durée pour atteindre 50% d'alpha
     public float secondPhaseDuration = 1f;   // Durée pour passer de 50% à 0% d'alpha
     private Renderer enemyRenderer;          // Référence au Renderer de l'ennemi
-
+    Animator playerAnimator;
+    bool attack = false;
     // Liste des couleurs possibles
     private Color[] possibleColors = {
         Color.white,                         // Blanc
-        new Color(0.5f, 0f, 0.5f),           // Violet (valeur RGB pour un violet)
-        new Color(1f, 0.41f, 0.71f),         // Rose (valeur RGB pour un rose)
+        new Color(0.5f, 0f, 0.5f),           // Violet
+        new Color(1f, 0.41f, 0.71f),         // Rose
         Color.black                          // Noir
     };
 
+    public float interactionRange = 5f;  // Distance maximale pour cliquer sur l'ennemi
+    private PickUpDrop pickUpDrop; // Référence au script PickUpDrop
+
     void Start()
     {
+        playerAnimator = FindObjectOfType<Animator>();
         // Récupérer le Renderer pour manipuler la couleur
         enemyRenderer = GetComponent<Renderer>();
 
+        // Vérifiez si le Renderer est bien assigné
+        if (enemyRenderer == null)
+        {
+            Debug.LogError("Le Renderer n'est pas assigné !");
+        }
+
+        // Récupérer la référence au script PickUpDrop
+        pickUpDrop = FindObjectOfType<PickUpDrop>();
+
         // Assigner une couleur aléatoire à l'ennemi
         AssignRandomColor();
+        Debug.Log("Ennemi instancié avec succès.");
     }
 
-    void OnTriggerEnter(Collider other)
+    void Update()
     {
-        // Vérifier si le joueur entre en collision avec l'ennemi
-        if (other.CompareTag("Player"))
+        if (attack)
+        { 
+            attack = false;
+            playerAnimator.SetBool("IsAttacking", false);
+        }
+        // Vérifier si un clic gauche de la souris est effectué
+        if (Input.GetMouseButtonDown(0))  // 0 représente le clic gauche
         {
-            // Démarrer le fade-out
-            StartCoroutine(FadeOutAndDestroy());
+            // Vérifier si le joueur tient la torche
+            if (pickUpDrop != null && pickUpDrop.IsHoldingTorch())
+            {
+                Debug.Log("Le joueur tient la torche, impossible de cliquer sur l'ennemi.");
+                return; // Sortir si le joueur tient la torche
+            }
+
+            // Lancer un raycast depuis la position de la caméra en direction de la souris
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Vérifier si le raycast touche quelque chose
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Vérifier si l'objet touché est cet ennemi
+                if (hit.collider.gameObject == gameObject)
+                {
+                    // Trouver l'objet du joueur avec le tag "Player"
+                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+                    // Vérifier que le joueur existe
+                    if (player != null)
+                    {
+                        // Calculer la distance entre le joueur et l'ennemi
+                        float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+
+                        // Vérifier si le joueur est dans la portée d'interaction
+                        if (distanceToPlayer <= interactionRange)
+                        {
+                            Debug.Log("Ennemi cliqué : " + gameObject.name);
+                            // Démarrer le fade-out
+                            playerAnimator.SetBool("IsAttacking",true);
+                            attack = true;
+                            StartCoroutine(FadeOutAndDestroy());
+                        }
+                        else
+                        {
+                            Debug.Log("Trop loin pour attaquer l'ennemi : " + gameObject.name);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Aucun objet avec le tag 'Player' trouvé !");
+                    }
+                }
+            }
         }
     }
 
@@ -46,7 +110,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator FadeOutAndDestroy()
     {
-        // Désactiver le collider pour éviter d'autres collisions
+        // Désactiver le collider pour éviter d'autres interactions
         GetComponent<Collider>().enabled = false;
 
         Color enemyColor = enemyRenderer.material.color; // Couleur actuelle de l'ennemi
