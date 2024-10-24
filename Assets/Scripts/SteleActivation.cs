@@ -11,29 +11,40 @@ public class SteleActivation : MonoBehaviour
     public float targetIntensity = 1.5f;    // Intensité maximale de la lumière
     public float flickerAmount = 0.05f;     // Amplitude du scintillement (variation autour de l'intensité cible)
     public float flickerDuration = 2f;      // Temps pour passer d'une intensité à une autre
-    public bool isActivated = false;        // Variable pour vérifier si la stèle est déjà activée
+    public bool isActivated = false;        // Variable pour vérifier si cette stèle est déjà activée
 
-    // Paramètres pour le Halo
-    public Behaviour haloComponent;         // Le composant Halo
-    public float haloMaxSize = 1.5f;        // Taille maximale du halo
-    public float haloFadeDuration = 2f;     // Durée de l'apparition progressive du halo
+    // Référence au manager
+    public StelesManager stelesManager; // Référence au StelesManager
+    private bool playerInRange = false; // Savoir si le joueur est dans la zone de la stèle
+    private PickUpDrop pickUpDrop;      // Référence au script PickUpDrop du joueur
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
     {
-        // Vérifier si le joueur est dans la zone de la stèle
+        // Si le joueur presse la touche F, est dans la zone et porte la torche
+        if (Input.GetKeyDown(KeyCode.F) && playerInRange && !isActivated && pickUpDrop != null && pickUpDrop.IsHoldingTorch())
+        {
+            ActivateStele(); // Activer la stèle
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Vérifier si le joueur est entré dans la zone de la stèle
         if (other.CompareTag("Player"))
         {
-            // Obtenir le script PickUpDrop du joueur pour vérifier s'il tient la torche
-            PickUpDrop pickUpDrop = other.GetComponent<PickUpDrop>();
+            playerInRange = true;
+            // Récupérer le script PickUpDrop du joueur pour vérifier s'il porte la torche
+            pickUpDrop = other.GetComponent<PickUpDrop>();
+        }
+    }
 
-            if (pickUpDrop != null && pickUpDrop.IsHoldingTorch() && !isActivated)
-            {
-                // Si le joueur presse la touche F et que la stèle n'est pas activée
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    ActivateStele();
-                }
-            }
+    private void OnTriggerExit(Collider other)
+    {
+        // Vérifier si le joueur est sorti de la zone de la stèle
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+            pickUpDrop = null; // Réinitialiser la référence à PickUpDrop lorsque le joueur sort
         }
     }
 
@@ -51,18 +62,18 @@ public class SteleActivation : MonoBehaviour
         // Démarrer l'augmentation progressive de la lumière
         if (activationLight != null)
         {
-            activationLight.gameObject.SetActive(true); // Activer le GameObject de la lumière
+            activationLight.gameObject.SetActive(true); // Activer la lumière
             StartCoroutine(IncreaseLightIntensity());  // Démarrer la coroutine pour augmenter l'intensité de la lumière
         }
 
-        // Activer le Halo progressivement
-        if (haloComponent != null)
+        // Notifier le manager que cette stèle est activée
+        if (stelesManager != null)
         {
-            StartCoroutine(FadeInHalo());
+            stelesManager.NotifySteleActivated();
         }
 
         // Debug pour confirmation
-        Debug.Log("Stèle activée avec lumière et halo !");
+        Debug.Log("Stèle activée avec lumière !");
     }
 
     // Coroutine pour augmenter progressivement l'intensité de la lumière
@@ -111,30 +122,5 @@ public class SteleActivation : MonoBehaviour
             // Attendre une courte pause (optionnel) avant de recommencer
             yield return new WaitForSeconds(0.1f);
         }
-    }
-
-    // Coroutine pour faire apparaître le halo progressivement
-    private IEnumerator FadeInHalo()
-    {
-        float currentTime = 0f;
-        float initialSize = 0f;  // Taille initiale du Halo
-
-        // Accéder à la propriété Halo via le système Reflection (car Unity n'expose pas cette propriété directement)
-        var halo = (Component)haloComponent;
-
-        while (currentTime < haloFadeDuration)
-        {
-            currentTime += Time.deltaTime;
-            // Calculer la taille du halo progressivement
-            float newSize = Mathf.Lerp(initialSize, haloMaxSize, currentTime / haloFadeDuration);
-
-            // Accéder à la taille du Halo et l'ajuster
-            halo.GetType().GetProperty("size").SetValue(halo, newSize, null);
-
-            yield return null; // Attendre la frame suivante
-        }
-
-        // Assurer que la taille du halo atteint bien la taille maximale
-        halo.GetType().GetProperty("size").SetValue(halo, haloMaxSize, null);
     }
 }
