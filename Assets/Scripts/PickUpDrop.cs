@@ -97,6 +97,9 @@ public class PickUpDrop : MonoBehaviour
         carriedObject = null;  // Réinitialiser la référence
     }
 
+   
+
+
     // Nouvelle méthode pour savoir si la torche est portée
     public bool IsHoldingTorch()
     {
