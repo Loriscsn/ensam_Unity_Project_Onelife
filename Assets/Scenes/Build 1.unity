@@ -1262,6 +1262,55 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45e109f47fec36b4c9ee62eba89ebccd, type: 3}
+--- !u!1 &206261163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 206261164}
+  - component: {fileID: 206261165}
+  m_Layer: 0
+  m_Name: EnemySpawnerEmpty
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &206261164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206261163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.346623, y: 0.72346514, z: -1.37}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &206261165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 206261163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19575f373b3d2847843a83c67443592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 7288755099897672109, guid: 61df24ee97b19304082fa89bd229a786, type: 3}
+  numberOfEnemies: 5
+  spawnArea: {x: 10, y: 0, z: 10}
+  spawnHeight: 1
+  minDistanceBetweenEnemies: 0.2
 --- !u!1 &206515998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b91025e83abf8b4b81c058c473856c4, type: 3}
@@ -11017,8 +11066,8 @@ MonoBehaviour:
   lightSource: {fileID: 299491076}
   minRange: 2.5
   maxRange: 15
-  transitionSpeed: 5
-  IsHoldingTorch: 0
+  transitionSpeed: 10
+  isTorchInHand: 1
   pickUpRange: 2
   player: {fileID: 1769394964}
 --- !u!1001 &1904639110
@@ -17314,3 +17363,4 @@ SceneRoots:
   - {fileID: 1255414796}
   - {fileID: 1745037319}
   - {fileID: 700087528}
+  - {fileID: 206261164}
