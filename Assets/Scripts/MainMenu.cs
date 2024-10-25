@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement; // Assure-toi d'avoir cette ligne pour charge
 
 public class MainMenu : MonoBehaviour
 {
+    public GameObject tuto;
     // Fonction pour le bouton Start
     public void StartGame()
     {
         // Charge la première scène du jeu (remplace "GameScene" par le nom exact de ta scène)
-        SceneManager.LoadScene("GameScene"); // Assure-toi que "GameScene" correspond bien à la scène de ton jeu
+        SceneManager.LoadScene("Build 1"); // Assure-toi que "GameScene" correspond bien à la scène de ton jeu
+        //tuto.SetActive(true);
     }
 
     // Fonction pour le bouton Quit

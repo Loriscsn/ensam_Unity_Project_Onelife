@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         playerAnimator = FindObjectOfType<Animator>();
-        enemyRenderer = GetComponent<Renderer>();
+        enemyRenderer = transform.GetChild(1).GetComponent<Renderer>();
         pickUpDrop = FindObjectOfType<PickUpDrop>();
 
         if (enemyRenderer == null)
@@ -43,6 +43,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        healthBar.gameObject.transform.parent.transform.LookAt(Camera.main.transform.position);
+
         if (attack)
         {
             attack = false;

@@ -11,6 +11,7 @@ public class EnemyFollow : MonoBehaviour
     public LayerMask obstructionMask;      // Masque de collision pour les obstacles (comme les murs)
     public float minDistanceBetweenEnemies = 1.0f; // Distance minimale entre les ennemis
     public float avoidanceRadius = 0.5f;   // Rayon d'évitement pour les ennemis
+    
 
     private bool canSeeTorch = false;  // Savoir si l'ennemi peut voir la torche
     private Rigidbody rb; // Référence au Rigidbody de l'ennemi
@@ -121,4 +122,5 @@ public class EnemyFollow : MonoBehaviour
             Gizmos.DrawLine(transform.position, torch.position);
         }
     }
+
 }
