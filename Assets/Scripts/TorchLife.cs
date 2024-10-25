@@ -47,6 +47,41 @@ public class TorchLife : MonoBehaviour
         }
     }
 
+    // Méthode pour ajouter de la vie à la torche
+    public void AddLife(float amount)
+    {
+        remainingTime += amount;
+
+        // S'assurer que la vie ne dépasse pas la durée de vie maximale
+        if (remainingTime > torchDuration)
+        {
+            remainingTime = torchDuration;
+        }
+
+        Debug.Log("Ajout de " + amount + " points de vie à la torche. Vie restante : " + remainingTime);
+    }
+
+    // Méthode pour ajouter la vie selon le niveau défini par la stèle
+    public void AddLifeFromStele()
+    {
+        float currentLifePercentage = remainingTime / torchDuration;
+
+        if (currentLifePercentage < 0.6f) // Si en dessous de 60%
+        {
+            remainingTime = torchDuration * 0.6f; // Ajuster à 60% de la durée de vie maximale
+        }
+        else // Si au-dessus de 60%
+        {
+            remainingTime += torchDuration * 0.2f; // Ajouter 20% de la durée de vie maximale
+            if (remainingTime > torchDuration) // Limiter à la durée max
+            {
+                remainingTime = torchDuration;
+            }
+        }
+
+        Debug.Log("Vie ajustée après activation de la stèle. Vie actuelle : " + remainingTime);
+    }
+
     void DetectAndDamageNearbyEnemies()
     {
         // Trouver tous les objets avec un collider dans le rayon de détection
@@ -77,7 +112,6 @@ public class TorchLife : MonoBehaviour
         Debug.Log("La torche est éteinte !");
 
         // Désactiver la lumière de la torche ou le Particle System, par exemple
-        // GetComponent<Light>().enabled = false;
         torchParticleSystem.Stop();
     }
 }
