@@ -33,7 +33,7 @@ public class StelesManager : MonoBehaviour
         // Ajoute des points de vie à la torche
         if (torchLife != null)
         {
-            torchLife.AddLife(10); // Ajouter 10 points de vie
+            torchLife.AddLifeFromStele(); // Appel de la méthode d'ajustement de vie
         }
 
         // Si toutes les stèles sont activées
