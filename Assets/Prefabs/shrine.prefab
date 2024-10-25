@@ -5068,6 +5068,7 @@ MonoBehaviour:
   flickerAmount: 0.13
   flickerDuration: 0.1
   isActivated: 0
+  stelesManager: {fileID: 0}
 --- !u!64 &2375442426194130131
 MeshCollider:
   m_ObjectHideFlags: 0
