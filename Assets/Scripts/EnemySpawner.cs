@@ -5,61 +5,68 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab; // Prefab de l'ennemi
-    public float spawnInterval = 5f; // Intervalle entre chaque groupe d'ennemis
-    private PickUpDrop pickUpDrop; // Référence au gestionnaire de la torche
-    private bool hasTorch = false; // Vérifie si la torche a été ramassée
-    private bool spawningEnemies = false; // Indique si nous sommes en train de faire apparaître des ennemis
+    public Transform player; // Référence à la position du joueur
+    public float initialSpawnDelay = 10f; // Délai initial avant la première apparition
+    public Vector2 spawnIntervalRange = new Vector2(10f, 25f); // Intervalle entre chaque vague d'ennemis
+    private int initialEnemyCount; // Nombre initial d'ennemis pour la première vague
+    private List<GameObject> activeEnemies = new List<GameObject>(); // Liste des ennemis actifs
+    private int waveMultiplier = 1; // Multiplicateur de vague pour chaque nouvelle vague
 
     void Start()
     {
-        // Trouver le gestionnaire de la torche dans la scène
-        pickUpDrop = FindObjectOfType<PickUpDrop>();
-
-        // Démarrer la coroutine de vérification de l'état de la torche
-        StartCoroutine(CheckTorchState());
+        initialEnemyCount = Random.Range(1, 5); // Nombre d'ennemis pour la première vague
+        StartCoroutine(SpawnEnemiesAfterDelay(initialSpawnDelay, initialEnemyCount)); // Première apparition
     }
 
-    IEnumerator CheckTorchState()
+    IEnumerator SpawnEnemiesAfterDelay(float delay, int enemyCount)
+    {
+        yield return new WaitForSeconds(delay);
+        SpawnEnemies(enemyCount);
+        StartCoroutine(SpawnNextWave());
+    }
+
+    IEnumerator SpawnNextWave()
     {
         while (true)
         {
-            // Vérifier si la torche a été ramassée
-            if (pickUpDrop.IsHoldingTorch())
+            // Attendre un intervalle aléatoire entre les vagues
+            float spawnInterval = Random.Range(spawnIntervalRange.x, spawnIntervalRange.y);
+            yield return new WaitForSeconds(spawnInterval);
+
+            // Compter les ennemis actifs
+            activeEnemies.RemoveAll(enemy => enemy == null); // Retirer les ennemis morts de la liste
+
+            int enemiesToSpawn;
+            if (activeEnemies.Count == 0)
             {
-                hasTorch = true; // La torche est dans la main
+                enemiesToSpawn = initialEnemyCount * waveMultiplier * 2; // Double des ennemis initiaux
             }
-            else if (hasTorch && !spawningEnemies)
+            else
             {
-                // La torche a été lâchée, commence à faire apparaître les ennemis
-                StartCoroutine(SpawnEnemies());
-                hasTorch = false; // Réinitialiser pour éviter de redémarrer la génération
+                enemiesToSpawn = Mathf.CeilToInt(initialEnemyCount * waveMultiplier * 0.5f); // 50% des ennemis initiaux
             }
 
-            // Attendre avant de vérifier à nouveau
-            yield return new WaitForSeconds(0.5f);
+            // Incrémenter le multiplicateur de vague pour la prochaine vague
+            waveMultiplier++;
+            SpawnEnemies(enemiesToSpawn);
         }
     }
 
-    IEnumerator SpawnEnemies()
+    void SpawnEnemies(int count)
     {
-        spawningEnemies = true; // Indiquer que nous commençons à faire apparaître des ennemis
-
-        for (int i = 0; i < 5; i++) // Faire apparaître 5 ennemis
+        for (int i = 0; i < count; i++)
         {
-            Instantiate(enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            yield return new WaitForSeconds(0.5f); // Pause entre chaque apparition d'ennemi
+            Vector3 spawnPosition = GetRandomSpawnPositionAroundPlayer();
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            activeEnemies.Add(enemy);
         }
-
-        // Attendre avant de permettre de générer un autre groupe d'ennemis
-        yield return new WaitForSeconds(spawnInterval);
-        spawningEnemies = false; // Réinitialiser l'indicateur pour permettre la prochaine génération
+        Debug.Log("Vague de " + count + " ennemis apparue.");
     }
 
-    Vector3 GetRandomSpawnPosition()
+    Vector3 GetRandomSpawnPositionAroundPlayer()
     {
-        // Logique pour générer une position aléatoire pour l'ennemi
-        float x = Random.Range(-10f, 10f);
-        float z = Random.Range(-10f, 10f);
-        return new Vector3(x, 0, z); // Position y = 0 pour la génération
+        float radius = 15f; // Rayon autour du joueur
+        Vector2 randomPos = Random.insideUnitCircle * radius;
+        return new Vector3(player.position.x + randomPos.x, 0, player.position.z + randomPos.y);
     }
 }
