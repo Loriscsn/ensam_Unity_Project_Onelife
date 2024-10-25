@@ -361,6 +361,7 @@ MonoBehaviour:
   - {fileID: 1005370958}
   - {fileID: 941845697}
   - {fileID: 1262740348}
+  torchLife: {fileID: 0}
 --- !u!1 &653511148
 GameObject:
   m_ObjectHideFlags: 0
