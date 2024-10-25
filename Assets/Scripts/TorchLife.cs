@@ -9,6 +9,7 @@ public class TorchLife : MonoBehaviour
     public float maxRateOverTime = 40f; // Taux maximum des particules quand la vie est à 100%
     public float enemyDamage = 5f; // Points de vie perdus lorsqu'un ennemi est proche
     public float enemyDetectionRange = 5.0f; // Rayon de détection des ennemis autour de la torche
+    public float lifePerStele = 10f; // Points de vie ajoutés par stèle
 
     private float remainingTime;
     private ParticleSystem.EmissionModule emissionModule;
@@ -45,6 +46,20 @@ public class TorchLife : MonoBehaviour
             remainingTime = 0;
             TurnOffTorch();
         }
+    }
+
+    // Méthode pour ajouter de la vie à la torche
+    public void AddLife(float amount)
+    {
+        remainingTime += amount;
+
+        // S'assurer que la vie ne dépasse pas la durée de vie maximale
+        if (remainingTime > torchDuration)
+        {
+            remainingTime = torchDuration;
+        }
+
+        Debug.Log("Ajout de " + amount + " points de vie à la torche. Vie restante : " + remainingTime);
     }
 
     void DetectAndDamageNearbyEnemies()

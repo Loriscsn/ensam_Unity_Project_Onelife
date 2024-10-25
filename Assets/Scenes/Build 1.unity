@@ -1317,7 +1317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19575f373b3d2847843a83c67443592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7288755099897672109, guid: 61df24ee97b19304082fa89bd229a786, type: 3}
+  enemyPrefab: {fileID: 7288755099897672109, guid: e48e3fdc70704d64f8f9c6d3aa29fb98, type: 3}
   spawnInterval: 5
 --- !u!1 &206515998 stripped
 GameObject:
@@ -10756,6 +10756,7 @@ MonoBehaviour:
   - {fileID: 440544975}
   - {fileID: 2085669762}
   - {fileID: 286257578}
+  torchLife: {fileID: 1901490293}
 --- !u!4 &1742464549
 Transform:
   m_ObjectHideFlags: 0
@@ -11471,7 +11472,7 @@ RectTransform:
   m_GameObject: {fileID: 1806997233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 0.2, z: 1}
+  m_LocalScale: {x: 4.85, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 808747171}
@@ -11494,16 +11495,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4308473, g: 0.8824148, b: 0.8867924, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 3
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
   m_FillAmount: 1
@@ -11742,8 +11743,9 @@ MonoBehaviour:
   torchDuration: 300
   torchParticleSystem: {fileID: 1961392865}
   maxRateOverTime: 40
-  enemyDamage: 2
-  enemyDetectionRange: 0.2
+  enemyDamage: 0.5
+  enemyDetectionRange: 0.5
+  lifePerStele: 500
 --- !u!1001 &1904639110
 PrefabInstance:
   m_ObjectHideFlags: 0

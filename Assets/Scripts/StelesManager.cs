@@ -6,6 +6,7 @@ public class StelesManager : MonoBehaviour
 {
     public SteleActivation[] steles; // Tableau de toutes les stèles dans la scène
     private int activatedStelesCount = 0;  // Compteur de stèles activées
+    public TorchLife torchLife; // Référence au script TorchLife
 
     void Start()
     {
@@ -13,6 +14,12 @@ public class StelesManager : MonoBehaviour
         if (steles.Length == 0)
         {
             Debug.LogError("Aucune stèle n'est assignée au manager !");
+        }
+
+        // Vérifier si la référence à la torche est assignée
+        if (torchLife == null)
+        {
+            Debug.LogError("La référence à TorchLife n'est pas assignée !");
         }
     }
 
@@ -22,6 +29,12 @@ public class StelesManager : MonoBehaviour
         activatedStelesCount++; // Incrémenter le nombre de stèles activées
 
         Debug.Log("Stèle activée ! Total activé : " + activatedStelesCount);
+
+        // Ajoute des points de vie à la torche
+        if (torchLife != null)
+        {
+            torchLife.AddLife(10); // Ajouter 10 points de vie
+        }
 
         // Si toutes les stèles sont activées
         if (activatedStelesCount >= steles.Length)
