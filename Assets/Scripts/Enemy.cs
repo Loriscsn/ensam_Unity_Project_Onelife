@@ -1,27 +1,24 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;  // Nécessaire pour utiliser les éléments UI
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public float firstPhaseDuration = 0.5f;  // Durée pour atteindre 50% d'alpha
-    public float secondPhaseDuration = 1f;   // Durée pour passer de 50% à 0% d'alpha
-    private Renderer enemyRenderer;          // Référence au Renderer de l'ennemi
+    public float firstPhaseDuration = 0.5f;
+    public float secondPhaseDuration = 1f;
+    private Renderer enemyRenderer;
     private Animator playerAnimator;
     private bool attack = false;
 
-    public float interactionRange = 5f;  // Distance maximale pour cliquer sur l'ennemi
-    private PickUpDrop pickUpDrop; // Référence au script PickUpDrop
+    public float interactionRange = 5f;
+    private PickUpDrop pickUpDrop;
 
-    public float maxHealth = 100f;  // Vie maximale de l'ennemi
-    private float currentHealth;      // Vie actuelle de l'ennemi
-    public Image healthBar;           // Image de la barre de vie (assignée dans l'éditeur)
+    public float maxHealth = 100f;
+    private float currentHealth;
+    public Image healthBar;
 
-    private Color healthColor;        // Couleur actuelle de la barre de vie
-
-    // Nouveau champ pour le nombre de clics nécessaires pour tuer l'ennemi
-    public int clicksToKill = 3;  // Nombre de clics nécessaires pour tuer l'ennemi
-    private float healthReductionPerClick; // Réduction de santé par clic
+    public int clicksToKill = 3;
+    private float healthReductionPerClick;
 
     void Start()
     {
@@ -35,9 +32,9 @@ public class Enemy : MonoBehaviour
         }
 
         AssignRandomColor();
-        currentHealth = maxHealth; // Initialiser la vie actuelle
+        currentHealth = maxHealth;
         UpdateHealthBar();
-        healthReductionPerClick = maxHealth / clicksToKill; // Calculer la réduction de santé par clic
+        healthReductionPerClick = maxHealth / clicksToKill;
         Debug.Log("Ennemi instancié avec succès.");
     }
 
@@ -51,12 +48,12 @@ public class Enemy : MonoBehaviour
             playerAnimator.SetBool("IsAttacking", false);
         }
 
-        if (Input.GetMouseButtonDown(0))  // Vérifier si un clic gauche est effectué
+        if (Input.GetMouseButtonDown(0))
         {
             if (pickUpDrop != null && pickUpDrop.IsHoldingTorch())
             {
                 Debug.Log("Le joueur tient la torche, impossible de cliquer sur l'ennemi.");
-                return; // Sortir si le joueur tient la torche
+                return;
             }
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -77,8 +74,7 @@ public class Enemy : MonoBehaviour
                             Debug.Log("Ennemi cliqué : " + gameObject.name);
                             attack = true;
 
-                            // Incrémenter les clics et réduire la vie de l'ennemi
-                            ReduceHealth(healthReductionPerClick);  // Réduction de santé proportionnelle
+                            ReduceHealth(healthReductionPerClick);
                         }
                         else
                         {
@@ -102,25 +98,26 @@ public class Enemy : MonoBehaviour
             currentHealth = 0;
             DestroyEnemy();
         }
-        UpdateHealthBar(); // Mettre à jour la barre de vie
-        StartCoroutine(ShakeHealthBar()); // Démarrer l'effet de tremblement
+        UpdateHealthBar();
+        StartCoroutine(ShakeHealthBar());
     }
 
     private void UpdateHealthBar()
     {
-        // Mettre à jour la couleur de la barre de vie
         float healthPercentage = currentHealth / maxHealth;
         healthBar.fillAmount = healthPercentage;
-
-        // Changer la couleur de la barre de vie (vert à rouge)
-        healthColor = Color.Lerp(Color.red, Color.green, healthPercentage);
-        healthBar.color = healthColor;
+        healthBar.color = Color.Lerp(Color.red, Color.green, healthPercentage);
     }
 
     private void DestroyEnemy()
     {
-        // Logique pour détruire l'ennemi
         Debug.Log("L'ennemi est détruit !");
+        StartCoroutine(FadeOutAndDestroy());
+    }
+
+    public void OnAttackTorch()
+    {
+        Debug.Log("L'ennemi attaque la torche et disparaît !");
         StartCoroutine(FadeOutAndDestroy());
     }
 
@@ -128,7 +125,7 @@ public class Enemy : MonoBehaviour
     {
         GetComponent<Collider>().enabled = false;
 
-        Color enemyColor = enemyRenderer.material.color; // Couleur actuelle de l'ennemi
+        Color enemyColor = enemyRenderer.material.color;
 
         float elapsedTime = 0f;
         while (elapsedTime < firstPhaseDuration)
@@ -141,7 +138,7 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
-        elapsedTime = 0f;  // Réinitialiser le temps écoulé
+        elapsedTime = 0f;
         while (elapsedTime < secondPhaseDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -152,24 +149,20 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
-        enemyColor.a = 0f;
-        enemyRenderer.material.color = enemyColor; // Assurer que l'alpha est 0
         Destroy(gameObject);
     }
 
-    // Méthode pour assigner une couleur aléatoire
     void AssignRandomColor()
     {
         Color randomColor = new Color(Random.value, Random.value, Random.value);
         enemyRenderer.material.color = randomColor;
     }
 
-    // Coroutine pour l'effet de tremblement de la barre de vie
     IEnumerator ShakeHealthBar()
     {
-        Vector3 originalPosition = healthBar.transform.localPosition; // Position originale de la barre de vie
-        float shakeDuration = 0.1f; // Durée de l'effet de tremblement
-        float shakeMagnitude = 5f; // Intensité du tremblement
+        Vector3 originalPosition = healthBar.transform.localPosition;
+        float shakeDuration = 0.1f;
+        float shakeMagnitude = 5f;
         float elapsed = 0f;
 
         while (elapsed < shakeDuration)
@@ -181,7 +174,6 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
-        // Réinitialiser la position de la barre de vie
         healthBar.transform.localPosition = originalPosition;
     }
 }

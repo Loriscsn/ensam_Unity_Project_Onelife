@@ -16158,6 +16158,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1769394964}
     - target: {fileID: 7883842511333133544, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
+      propertyPath: enemyDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7883842511333133544, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
       propertyPath: torchLifeImage
       value: 
       objectReference: {fileID: 1806997235}
