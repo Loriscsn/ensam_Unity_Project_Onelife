@@ -9,6 +9,7 @@ public class TorchLife : MonoBehaviour
     public float maxRateOverTime = 40f; // Taux maximum des particules quand la vie est à 100%
     public float enemyDamage = 5f; // Points de vie perdus lorsqu'un ennemi est proche
     public float enemyDetectionRange = 5.0f; // Rayon de détection des ennemis autour de la torche
+    public GameObject loseCanvas; // Référence au Canvas de défaite
 
     private float remainingTime;
     private ParticleSystem.EmissionModule emissionModule;
@@ -17,9 +18,16 @@ public class TorchLife : MonoBehaviour
     {
         remainingTime = torchDuration;
         torchLifeImage.fillAmount = 1f; // Remplissage complet au début
-
-        // Accéder au module d'émission du Particle System
         emissionModule = torchParticleSystem.emission;
+
+        if (loseCanvas != null)
+        {
+            loseCanvas.SetActive(false); // Désactive le Canvas de défaite au démarrage
+        }
+        else
+        {
+            Debug.LogError("LoseCanvas n'est pas assigné dans l'Inspector !");
+        }
     }
 
     void Update()
@@ -110,8 +118,12 @@ public class TorchLife : MonoBehaviour
     {
         // Logique pour éteindre la torche
         Debug.Log("La torche est éteinte !");
-
-        // Désactiver la lumière de la torche ou le Particle System, par exemple
         torchParticleSystem.Stop();
+
+        // Afficher l'écran Lose
+        if (loseCanvas != null)
+        {
+            loseCanvas.SetActive(true);
+        }
     }
 }

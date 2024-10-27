@@ -7,6 +7,7 @@ public class StelesManager : MonoBehaviour
     public SteleActivation[] steles; // Tableau de toutes les stèles dans la scène
     private int activatedStelesCount = 0;  // Compteur de stèles activées
     public TorchLife torchLife; // Référence au script TorchLife
+    public GameObject victoryCanvas; // Référence au Canvas de victoire
 
     void Start()
     {
@@ -21,6 +22,16 @@ public class StelesManager : MonoBehaviour
         {
             Debug.LogError("La référence à TorchLife n'est pas assignée !");
         }
+
+        // Vérifier que le Canvas de victoire est assigné
+        if (victoryCanvas == null)
+        {
+            Debug.LogError("La référence à VictoryCanvas n'est pas assignée !");
+        }
+        else
+        {
+            victoryCanvas.SetActive(false); // S'assurer que le Canvas de victoire est désactivé au début
+        }
     }
 
     // Fonction appelée par chaque stèle lorsqu'elle est activée
@@ -30,7 +41,7 @@ public class StelesManager : MonoBehaviour
 
         Debug.Log("Stèle activée ! Total activé : " + activatedStelesCount);
 
-        // Ajoute des points de vie à la torche
+        // Ajouter des points de vie à la torche
         if (torchLife != null)
         {
             torchLife.AddLifeFromStele(); // Appel de la méthode d'ajustement de vie
@@ -47,6 +58,10 @@ public class StelesManager : MonoBehaviour
     private void AllStelesActivated()
     {
         Debug.Log("Toutes les stèles sont activées !");
-        // Ici, tu peux déclencher une action (ouvrir une porte, jouer un son, etc.)
+        // Activer le Canvas de victoire
+        if (victoryCanvas != null)
+        {
+            victoryCanvas.SetActive(true);
+        }
     }
 }
