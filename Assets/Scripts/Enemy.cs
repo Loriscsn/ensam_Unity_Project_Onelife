@@ -98,7 +98,13 @@ public class Enemy : MonoBehaviour
     {
         float healthPercentage = currentHealth / maxHealth;
         healthBar.fillAmount = healthPercentage;
-        healthColor = Color.Lerp(Color.red, Color.green, healthPercentage);
+
+        // Couleurs personnalisées
+        Color ghostlyBlueGreen = new Color(0.4f, 0.8f, 0.75f, 1f);  // Bleu-vert doux, style "fantôme"
+        Color softRedOrange = new Color(0.9f, 0.4f, 0.3f, 1f);      // Rouge-orangé doux
+
+        // Interpolation entre les couleurs en fonction du pourcentage de santé
+        healthColor = Color.Lerp(softRedOrange, ghostlyBlueGreen, healthPercentage);
         healthBar.color = healthColor;
     }
 
