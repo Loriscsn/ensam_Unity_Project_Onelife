@@ -16902,8 +16902,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2093094406}
-  - component: {fileID: 2093094405}
   - component: {fileID: 2093094407}
+  - component: {fileID: 2093094405}
   m_Layer: 7
   m_Name: PostProcess
   m_TagString: Untagged
@@ -16924,7 +16924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sharedProfile: {fileID: 11400000, guid: dc950befba598f741a1c9cf5016abc62, type: 2}
-  isGlobal: 0
+  isGlobal: 1
   blendDistance: 0
   weight: 1
   priority: 0
@@ -16937,8 +16937,8 @@ Transform:
   m_GameObject: {fileID: 2093094404}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.1526027, y: 1.8497794, z: -0.693248}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalPosition: {x: -4.1526027, y: 9.29, z: -0.693248}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
