@@ -1707,7 +1707,7 @@ MonoBehaviour:
   interval8EnemyRange: {x: 2, y: 4}
   interval8SpawnRate: {x: 10, y: 20}
   spawnSound: {fileID: 8300000, guid: 59cac83bfd17b89438b192de854c07b7, type: 3}
-  spawnSoundVolume: 0.25
+  spawnSoundVolume: 0.5
 --- !u!1 &206515998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b91025e83abf8b4b81c058c473856c4, type: 3}
@@ -17284,6 +17284,10 @@ PrefabInstance:
       propertyPath: torchLifeImage
       value: 
       objectReference: {fileID: 1806997235}
+    - target: {fileID: 7883842511333133544, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
+      propertyPath: enemyDetectionRange
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8928729206804855357, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
       propertyPath: m_Color.b
       value: 1

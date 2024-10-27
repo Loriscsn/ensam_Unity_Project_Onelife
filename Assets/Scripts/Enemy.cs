@@ -51,45 +51,40 @@ public class Enemy : MonoBehaviour
             playerAnimator.SetBool("IsAttacking", false);
         }
 
-        if (Input.GetMouseButtonDown(0))  // Vérifier si un clic gauche est effectué
+        // Vérifier le clic gauche
+        if (Input.GetMouseButtonDown(0))
         {
+            // Vérifier si le joueur tient la torche
             if (pickUpDrop != null && pickUpDrop.IsHoldingTorch())
             {
                 Debug.Log("Le joueur tient la torche, impossible de cliquer sur l'ennemi.");
                 return; // Sortir si le joueur tient la torche
             }
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            // Trouver le joueur
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
 
-            if (Physics.Raycast(ray, out hit))
+            if (player != null)
             {
-                if (hit.collider.gameObject == gameObject)
+                float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+
+                // Vérifier si l'ennemi est à portée d'attaque
+                if (distanceToPlayer <= interactionRange)
                 {
-                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+                    Debug.Log("Ennemi cliqué : " + gameObject.name);
+                    attack = true;
 
-                    if (player != null)
-                    {
-                        float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-
-                        if (distanceToPlayer <= interactionRange)
-                        {
-                            Debug.Log("Ennemi cliqué : " + gameObject.name);
-                            attack = true;
-
-                            // Incrémenter les clics et réduire la vie de l'ennemi
-                            ReduceHealth(healthReductionPerClick);  // Réduction de santé proportionnelle
-                        }
-                        else
-                        {
-                            Debug.Log("Trop loin pour attaquer l'ennemi : " + gameObject.name);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError("Aucun objet avec le tag 'Player' trouvé !");
-                    }
+                    // Incrémenter les clics et réduire la vie de l'ennemi
+                    ReduceHealth(healthReductionPerClick);  // Réduction de santé proportionnelle
                 }
+                else
+                {
+                    Debug.Log("Trop loin pour attaquer l'ennemi : " + gameObject.name);
+                }
+            }
+            else
+            {
+                Debug.LogError("Aucun objet avec le tag 'Player' trouvé !");
             }
         }
     }
