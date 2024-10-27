@@ -330,7 +330,7 @@ MonoBehaviour:
   fieldOfView: 359
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   minDistanceBetweenEnemies: 1
   avoidanceRadius: 1
   amplitude: 0.025
