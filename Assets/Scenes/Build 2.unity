@@ -1225,7 +1225,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 7288755099897672109, guid: e48e3fdc70704d64f8f9c6d3aa29fb98, type: 3}
-  spawnInterval: 5
+  player: {fileID: 0}
+  initialSpawnDelay: 10
+  spawnRadius: 15
+  minDistanceBetweenEnemies: 5
+  interval1Time: 60
+  interval1EnemyRange: {x: 1, y: 2}
+  interval1SpawnRate: {x: 10, y: 25}
+  interval2Time: 120
+  interval2EnemyRange: {x: 1, y: 3}
+  interval2SpawnRate: {x: 10, y: 25}
+  interval3Time: 180
+  interval3EnemyRange: {x: 2, y: 3}
+  interval3SpawnRate: {x: 10, y: 25}
+  interval4Time: 240
+  interval4EnemyRange: {x: 2, y: 4}
+  interval4SpawnRate: {x: 10, y: 25}
+  interval5Time: 300
+  interval5EnemyRange: {x: 3, y: 4}
+  interval5SpawnRate: {x: 10, y: 25}
+  interval6Time: 360
+  interval6EnemyRange: {x: 3, y: 5}
+  interval6SpawnRate: {x: 35, y: 45}
+  interval7Time: 480
+  interval7EnemyRange: {x: 4, y: 5}
+  interval7SpawnRate: {x: 20, y: 35}
+  interval8Time: 600
+  interval8EnemyRange: {x: 2, y: 4}
+  interval8SpawnRate: {x: 10, y: 20}
+  spawnSound: {fileID: 0}
+  spawnSoundVolume: 1
 --- !u!1 &206515998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b91025e83abf8b4b81c058c473856c4, type: 3}
@@ -11298,6 +11327,7 @@ MonoBehaviour:
   maxRateOverTime: 40
   enemyDamage: 2
   enemyDetectionRange: 0.2
+  loseCanvas: {fileID: 0}
 --- !u!65 &1901490296
 BoxCollider:
   m_ObjectHideFlags: 0
