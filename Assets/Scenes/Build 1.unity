@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.8820755, g: 0.8969814, b: 1, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.02
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1680,11 +1680,34 @@ MonoBehaviour:
   enemyPrefab: {fileID: 7288755099897672109, guid: e48e3fdc70704d64f8f9c6d3aa29fb98, type: 3}
   player: {fileID: 1769394964}
   initialSpawnDelay: 2
-  spawnIntervalRange: {x: 20, y: 35}
-  spawnSound: {fileID: 8300000, guid: 59cac83bfd17b89438b192de854c07b7, type: 3}
-  spawnSoundVolume: 0.25
   spawnRadius: 15
   minDistanceBetweenEnemies: 5
+  interval1Time: 60
+  interval1EnemyRange: {x: 1, y: 2}
+  interval1SpawnRate: {x: 10, y: 25}
+  interval2Time: 120
+  interval2EnemyRange: {x: 1, y: 3}
+  interval2SpawnRate: {x: 10, y: 25}
+  interval3Time: 180
+  interval3EnemyRange: {x: 2, y: 3}
+  interval3SpawnRate: {x: 10, y: 25}
+  interval4Time: 240
+  interval4EnemyRange: {x: 2, y: 4}
+  interval4SpawnRate: {x: 10, y: 25}
+  interval5Time: 300
+  interval5EnemyRange: {x: 3, y: 4}
+  interval5SpawnRate: {x: 10, y: 25}
+  interval6Time: 360
+  interval6EnemyRange: {x: 3, y: 5}
+  interval6SpawnRate: {x: 35, y: 45}
+  interval7Time: 480
+  interval7EnemyRange: {x: 4, y: 5}
+  interval7SpawnRate: {x: 20, y: 35}
+  interval8Time: 600
+  interval8EnemyRange: {x: 2, y: 4}
+  interval8SpawnRate: {x: 10, y: 20}
+  spawnSound: {fileID: 8300000, guid: 59cac83bfd17b89438b192de854c07b7, type: 3}
+  spawnSoundVolume: 0.25
 --- !u!1 &206515998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b91025e83abf8b4b81c058c473856c4, type: 3}
@@ -5848,7 +5871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0
