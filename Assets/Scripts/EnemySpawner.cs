@@ -12,8 +12,19 @@ public class EnemySpawner : MonoBehaviour
     private List<GameObject> activeEnemies = new List<GameObject>(); // Liste des ennemis actifs
     private int waveMultiplier = 1; // Multiplicateur de vague pour chaque nouvelle vague
 
+    // Nouveau champ pour le clip audio
+    public AudioClip spawnSound; // Clip audio à jouer lors de l'apparition d'un ennemi
+    private AudioSource audioSource; // Référence à l'AudioSource
+
+    // Nouveau champ pour le volume du son
+    [Range(0f, 1f)] // Limiter la valeur entre 0 et 1 dans l'inspecteur
+    public float spawnSoundVolume = 1f; // Volume du son d'apparition
+
     void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>(); // Ajouter un AudioSource à l'EnemySpawner
+        audioSource.clip = spawnSound; // Assigner le clip audio
+
         initialEnemyCount = Random.Range(1, 5); // Nombre d'ennemis pour la première vague
         StartCoroutine(SpawnEnemiesAfterDelay(initialSpawnDelay, initialEnemyCount)); // Première apparition
     }
@@ -59,6 +70,12 @@ public class EnemySpawner : MonoBehaviour
             Vector3 spawnPosition = GetRandomSpawnPositionAroundPlayer();
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             activeEnemies.Add(enemy);
+
+            // Jouer le son pour le premier fantôme seulement
+            if (i == 0) // Vérifie si c'est le premier ennemi de la vague
+            {
+                audioSource.PlayOneShot(spawnSound, spawnSoundVolume); // Joue le son d'apparition avec le volume spécifié
+            }
         }
         Debug.Log("Vague de " + count + " ennemis apparue.");
     }
@@ -69,5 +86,4 @@ public class EnemySpawner : MonoBehaviour
         Vector2 randomPos = Random.insideUnitCircle * radius;
         return new Vector3(player.position.x + randomPos.x, 0, player.position.z + randomPos.y);
     }
-
 }

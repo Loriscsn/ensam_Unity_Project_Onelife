@@ -1469,6 +1469,8 @@ MonoBehaviour:
   player: {fileID: 1769394964}
   initialSpawnDelay: 2
   spawnIntervalRange: {x: 20, y: 35}
+  spawnSound: {fileID: 8300000, guid: 59cac83bfd17b89438b192de854c07b7, type: 3}
+  spawnSoundVolume: 0.25
 --- !u!1 &206515998 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b91025e83abf8b4b81c058c473856c4, type: 3}
@@ -13333,7 +13335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normalMoveSpeed: 7
-  holdingTorchSpeed: 5
+  holdingTorchSpeed: 3
   rotationSpeed: 720
 --- !u!64 &1769394962
 MeshCollider:
@@ -13413,7 +13415,7 @@ AudioSource:
   m_GameObject: {fileID: 1769394958}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: ad9e244ab2f6f2047a87c73a3b3249c3, type: 2}
   m_audioClip: {fileID: 8300000, guid: 7e359cac3a00fb348ae449356c451568, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -16159,7 +16161,7 @@ PrefabInstance:
       objectReference: {fileID: 1769394964}
     - target: {fileID: 7883842511333133544, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
       propertyPath: enemyDamage
-      value: 10
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7883842511333133544, guid: 9dab48961853f8b4aadad1f27de44537, type: 3}
       propertyPath: torchLifeImage
