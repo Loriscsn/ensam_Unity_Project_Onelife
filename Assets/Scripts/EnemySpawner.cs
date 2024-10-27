@@ -20,6 +20,9 @@ public class EnemySpawner : MonoBehaviour
     [Range(0f, 1f)] // Limiter la valeur entre 0 et 1 dans l'inspecteur
     public float spawnSoundVolume = 1f; // Volume du son d'apparition
 
+    public float spawnRadius = 15f; // Rayon autour du joueur pour la zone de spawn
+    public float minDistanceBetweenEnemies = 5f; // Distance minimale entre les ennemis
+
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>(); // Ajouter un AudioSource à l'EnemySpawner
@@ -67,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            Vector3 spawnPosition = GetRandomSpawnPositionAroundPlayer();
+            Vector3 spawnPosition = GetValidSpawnPosition();
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             activeEnemies.Add(enemy);
 
@@ -80,10 +83,35 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("Vague de " + count + " ennemis apparue.");
     }
 
+    Vector3 GetValidSpawnPosition()
+    {
+        Vector3 spawnPosition;
+        bool validPosition;
+
+        do
+        {
+            // Génère une position aléatoire autour du joueur
+            spawnPosition = GetRandomSpawnPositionAroundPlayer();
+            validPosition = true;
+
+            // Vérifie que la nouvelle position respecte la distance minimale entre chaque ennemi
+            foreach (GameObject enemy in activeEnemies)
+            {
+                if (enemy != null && Vector3.Distance(spawnPosition, enemy.transform.position) < minDistanceBetweenEnemies)
+                {
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
+        while (!validPosition); // Continue jusqu'à trouver une position valide
+
+        return spawnPosition;
+    }
+
     Vector3 GetRandomSpawnPositionAroundPlayer()
     {
-        float radius = 15f; // Rayon autour du joueur
-        Vector2 randomPos = Random.insideUnitCircle * radius;
+        Vector2 randomPos = Random.insideUnitCircle * spawnRadius;
         return new Vector3(player.position.x + randomPos.x, 0, player.position.z + randomPos.y);
     }
 }
