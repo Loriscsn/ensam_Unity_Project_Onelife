@@ -326,7 +326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   torch: {fileID: 0}
   speed: 6
-  detectionRange: 50
+  detectionRange: 200
   fieldOfView: 359
   obstructionMask:
     serializedVersion: 2
